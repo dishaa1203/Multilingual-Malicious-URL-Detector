@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureScan | Multilingual Phishing Detector</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --danger: #ef4444;
+            --danger-dark: #dc2626;
+            --success: #22c55e;
+            --success-dark: #16a34a;
+            --warning: #f59e0b;
+            --warning-dark: #d97706;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            background: rgba(37, 99, 235, 0.05);
+        }
+        
+        .tab i {
+            margin-right: 10px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .card-icon {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input[type="url"], input[type="text"], textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="url"]:focus, input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .url-example {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .file-input-container {
+            border: 2px dashed var(--gray-light);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        
+        .file-input-container:hover {
+            border-color: var(--primary);
+            background-color: rgba(37, 99, 235, 0.03);
+        }
+        
+        .file-input-label {
+            background: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+        
+        .file-input-label:hover {
+            background: var(--primary-dark);
+        }
+        
+        .file-name {
+            display: block;
+            margin-top: 15px;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .file-name i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .file-info {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .detect-btn {
+            width: 100%;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 18px;
+            font-size: 18px;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .phishing {
+            background: #fee2e2;
+            color: var(--danger-dark);
+            border-left: 5px solid var(--danger);
+        }
+        
+        .safe {
+            background: #dcfce7;
+            color: var(--success-dark);
+            border-left: 5px solid var(--success);
+        }
+        
+        .warning {
+            background: #fef3c7;
+            color: var(--warning-dark);
+            border-left: 5px solid var(--warning);
+        }
+        
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .result-icon {
+            font-size: 24px;
+        }
+        
+        .result-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .result-content {
+            margin-left: 34px;
+        }
+        
+        .confidence {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .extracted-text {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .extracted-text h4 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .extracted-text-content {
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            text-align: center;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-header {
+            margin-bottom: 20px;
+        }
+        
+        .modal-icon {
+            font-size: 60px;
+            color: var(--danger);
+            margin-bottom: 15px;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--danger-dark);
+            margin-bottom: 10px;
+        }
+        
+        .modal-message {
+            color: var(--dark);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: var(--danger-dark);
+        }
+        
+        .btn-secondary {
+            background: var(--gray-light);
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: var(--gray);
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: var(--dark);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .loading-dots {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 20px;
+            text-align: center;
+        }
+        
+        .loading-dots span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            margin: 0 3px;
+            animation: loading 1.4s infinite ease-in-out both;
+        }
+        
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes loading {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .card {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+            
+            .file-input-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1>SecureScan</h1>
+            </div>
+            <p class="subtitle">Advanced multilingual phishing detection to protect your online security. Check URLs, text, files, and images for potential threats.</p>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="url">
+                <i class="fas fa-link"></i> URL Check
+            </div>
+            <div class="tab" data-tab="text">
+                <i class="fas fa-font"></i> Text Check
+            </div>
+            <div class="tab" data-tab="file">
+                <i class="fas fa-file-upload"></i> File Check
+            </div>
+            <div class="tab" data-tab="image">
+                <i class="fas fa-image"></i> Image Check
+            </div>
+        </div>
+        
+        <div class="tab-content active" id="url-tab">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h2 class="card-title">Check URL</h2>
+                </div>
+                
+                <div class="input-group">
+                    <label for="url-input">Enter suspicious URL</label>
+                    <input type="url" id="url-input" placeholder="https://example.com">
+                    <p class="url-example">Example: http://urgent-update-now.net</p>
+                </div>
+                
+                <button class="detect-btn" id="check-url-btn">
+                    <i class="fas fa-search"></i> Detect Phishing
+                </button>
+                
+                <div id="url-result" class="result">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="text-tab">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-font"></i>
+                    </div>
+                    <h2 class="card-title">Check Text</h2>
+                </div>
+                
+                <div class="input-group">
+                    <label for="text-input">Paste suspicious text in any language</label>
+                    <textarea id="text-input" placeholder="Warning! Your account may be compromised. Please login immediately:"></textarea>
+                    <p class="url-example">We support text in English, Spanish, French, German, Chinese, Arabic, and many other languages.</p>
+                </div>
+                
+                <button class="detect-btn" id="check-text-btn">
+                    <i class="fas fa-search"></i> Detect Phishing
+                </button>
+                
+                <div id="text-result" class="result">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="file-tab">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-file-upload"></i>
+                    </div>
+                    <h2 class="card-title">Check File</h2>
+                </div>
+                
+                <div class="input-group">
+                    <label>Upload file with content to analyze</label>
+                    <div class="file-input-container" id="file-drop-area">
+                        <label for="file-upload" class="file-input-label">
+                            <i class="fas fa-cloud-upload-alt"></i> Choose File
+                        </label>
+                        <span class="file-name" id="file-name"><i class="fas fa-file"></i> No file chosen</span>
+                        <p class="file-info">Supported formats: .txt, .docx, .pdf (max 5MB)</p>
+                    </div>
+                    <input type="file" id="file-upload" accept=".txt,.docx,.pdf" style="display: none;">
+                </div>
+                
+                <button class="detect-btn" id="check-file-btn">
+                    <i class="fas fa-search"></i> Detect Phishing
+                </button>
+                
+                <div id="file-result" class="result">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="image-tab">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h2 class="card-title">Check Image</h2>
+                </div>
+                
+                <div class="input-group">
+                    <label>Upload image to analyze for phishing text</label>
+                    <div class="file-input-container" id="image-drop-area">
+                        <label for="image-upload" class="file-input-label">
+                            <i class="fas fa-cloud-upload-alt"></i> Choose Image
+                        </label>
+                        <span class="file-name" id="image-name"><i class="fas fa-file-image"></i> No image chosen</span>
+                        <img id="image-preview" class="image-preview" alt="Image preview">
+                        <p class="file-info">Supported formats: .jpg, .jpeg, .png, .gif, .bmp (max 5MB)</p>
+                    </div>
+                    <input type="file" id="image-upload" accept=".jpg,.jpeg,.png,.gif,.bmp" style="display: none;">
+                </div>
+                
+                <button class="detect-btn" id="check-image-btn">
+                    <i class="fas fa-search"></i> Detect Phishing in Image
+                </button>
+                
+                <div id="image-result" class="result">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Phishing Warning Modal -->
+    <div id="phishing-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2 class="modal-title">Security Warning</h2>
+            </div>
+            <p class="modal-message" id="modal-message">
+                We've detected potential phishing content. This could be an attempt to steal your personal information.
+            </p>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-secondary" id="understand-btn">I Understand</button>
+                <button class="modal-btn btn-danger" id="learn-more-btn">Learn More</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 SecureScan Multilingual Phishing Detection | Protecting users from online threats worldwide</p>
+    </footer>
+
+    <script>
+        const BACKEND_URL = 'http://localhost:8000/analyze';
+
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show active tab content
+                tabContents.forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+        
+        // File input functionality
+        const fileInput = document.getElementById('file-upload');
+        const fileDropArea = document.getElementById('file-drop-area');
+        const fileName = document.getElementById('file-name');
+        
+        fileInput.addEventListener('change', function() {
+            updateFileName(fileInput, fileName, ['.txt', '.docx', '.pdf']);
+        });
+        
+        // Image input functionality
+        const imageInput = document.getElementById('image-upload');
+        const imageDropArea = document.getElementById('image-drop-area');
+        const imageName = document.getElementById('image-name');
+        const imagePreview = document.getElementById('image-preview');
+        
+        imageInput.addEventListener('change', function() {
+            updateFileName(imageInput, imageName, ['.jpg', '.jpeg', '.png', '.gif', '.bmp']);
+            previewImage(imageInput, imagePreview);
+        });
+        
+        // Setup drag and drop for both file and image areas
+        setupDragAndDrop(fileDropArea, fileInput, ['.txt', '.docx', '.pdf']);
+        setupDragAndDrop(imageDropArea, imageInput, ['.jpg', '.jpeg', '.png', '.gif', '.bmp']);
+        
+        function updateFileName(inputElement, nameElement, validExtensions) {
+            if (inputElement.files.length > 0) {
+                const file = inputElement.files[0];
+                const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                nameElement.innerHTML = `<i class="fas fa-file"></i> ${file.name} <span style="color: var(--gray);">(${fileSize} MB)</span>`;
+                
+                // Validate file size
+                if (file.size > 5 * 1024 * 1024) {
+                    nameElement.innerHTML += ' <span style="color: var(--danger);">(File too large!)</span>';
+                }
+                
+                // Validate file type
+                const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+                if (!validExtensions.includes(fileExtension)) {
+                    nameElement.innerHTML += ' <span style="color: var(--danger);">(Unsupported format!)</span>';
+                }
+            } else {
+                nameElement.innerHTML = inputElement.id === 'image-upload' 
+                    ? '<i class="fas fa-file-image"></i> No image chosen' 
+                    : '<i class="fas fa-file"></i> No file chosen';
+            }
+        }
+        
+        function previewImage(inputElement, previewElement) {
+            if (inputElement.files && inputElement.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewElement.src = e.target.result;
+                    previewElement.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(inputElement.files[0]);
+            } else {
+                previewElement.style.display = 'none';
+            }
+        }
+        
+        function setupDragAndDrop(dropArea, inputElement, validExtensions) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.style.borderColor = 'var(--primary)';
+                dropArea.style.backgroundColor = 'rgba(37, 99, 235, 0.05)';
+            }
+            
+            function unhighlight() {
+                dropArea.style.borderColor = 'var(--gray-light)';
+                dropArea.style.backgroundColor = 'transparent';
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length) {
+                    inputElement.files = files;
+                    const event = new Event('change');
+                    inputElement.dispatchEvent(event);
+                }
+            }
+        }
+        
+        // Modal functionality
+        const modal = document.getElementById('phishing-modal');
+        const closeModal = document.getElementById('close-modal');
+        const understandBtn = document.getElementById('understand-btn');
+        const learnMoreBtn = document.getElementById('learn-more-btn');
+        const modalMessage = document.getElementById('modal-message');
+        
+        function showPhishingWarning(inputType, content) {
+            let message = `We've detected potential phishing content in the ${inputType} you submitted. `;
+            message += `This could be an attempt to steal your personal information. `;
+            
+            if (inputType === 'URL') {
+                message += `Avoid visiting suspicious websites and never enter personal information on untrusted sites.`;
+            } else {
+                message += `Be cautious of messages that create urgency or ask for personal information.`;
+            }
+            
+            modalMessage.textContent = message;
+            modal.style.display = 'flex';
+        }
+        
+        function hideModal() {
+            modal.style.display = 'none';
+        }
+        
+        closeModal.addEventListener('click', hideModal);
+        understandBtn.addEventListener('click', hideModal);
+        learnMoreBtn.addEventListener('click', function() {
+            window.open('https://www.consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams', '_blank');
+        });
+        
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                hideModal();
+            }
+        });
+        
+        // Function to display results
+        function displayResult(resultElement, prediction, confidence, inputType, content, extractedText = null) {
+            resultElement.style.display = 'block';
+            
+            if (prediction === 1) {
+                resultElement.className = 'result phishing';
+                resultElement.innerHTML = `
+                    <div class="result-header">
+                        <i class="result-icon fas fa-exclamation-triangle"></i>
+                        <div class="result-title">Potential Phishing Detected</div>
+                    </div>
+                    <div class="result-content">
+                        <p>This ${inputType} exhibits characteristics commonly associated with phishing attempts.</p>
+                        <div class="confidence">Confidence: ${Math.round(confidence * 100)}%</div>
+                    </div>
+                `;
+                
+                // Add extracted text section if available
+                if (extractedText) {
+                    resultElement.innerHTML += `
+                        <div class="extracted-text">
+                            <h4>Text extracted from image:</h4>
+                            <div class="extracted-text-content">${extractedText}</div>
+                        </div>
+                    `;
+                }
+                
+                // Show the phishing warning modal
+                showPhishingWarning(inputType, content);
+            } else {
+                resultElement.className = 'result safe';
+                resultElement.innerHTML = `
+                    <div class="result-header">
+                        <i class="result-icon fas fa-check-circle"></i>
+                        <div class="result-title">No Threats Detected</div>
+                    </div>
+                    <div class="result-content">
+                        <p>This ${inputType} appears to be safe based on our analysis.</p>
+                        <div class="confidence">Confidence: ${Math.round(confidence * 100)}%</div>
+                    </div>
+                `;
+                
+                // Add extracted text section if available
+                if (extractedText) {
+                    resultElement.innerHTML += `
+                        <div class="extracted-text">
+                            <h4>Text extracted from image:</h4>
+                            <div class="extracted-text-content">${extractedText}</div>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Function to show error
+        function showError(resultElement, message) {
+            resultElement.style.display = 'block';
+            resultElement.className = 'result warning';
+            resultElement.innerHTML = `
+                <div class="result-header">
+                    <i class="result-icon fas fa-exclamation-circle"></i>
+                    <div class="result-title">Error</div>
+                </div>
+                <div class="result-content">
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+        
+        // Function to show loading state with animation
+        function showLoading(resultElement, message) {
+            resultElement.style.display = 'block';
+            resultElement.className = 'result warning';
+            resultElement.innerHTML = `
+                <div class="result-header">
+                    <div class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="result-title">Analyzing</div>
+                </div>
+                <div class="result-content">
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+        
+        // Generic function to send request
+        async function sendAnalysis(formData, resultElement, inputType, content) {
+            showLoading(resultElement, `Analyzing ${inputType}...`);
+            
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout for images
+                
+                const response = await fetch(BACKEND_URL, {
+                    method: 'POST',
+                    body: formData,
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    showError(resultElement, data.error);
+                } else {
+                    displayResult(resultElement, data.prediction, data.confidence, inputType, content, data.extracted_text || null);
+                }
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    showError(resultElement, 'Request timeout. Please try again.');
+                } else {
+                    showError(resultElement, 'Error connecting to the server. Please make sure the backend is running.');
+                }
+                console.error('Error:', error);
+            }
+        }
+        
+        // Check URL button
+        document.getElementById('check-url-btn').addEventListener('click', async function() {
+            const urlInput = document.getElementById('url-input').value;
+            const resultDiv = document.getElementById('url-result');
+            
+            if (!urlInput) {
+                showError(resultDiv, 'Please enter a URL to analyze.');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('url', urlInput);
+            
+            sendAnalysis(formData, resultDiv, 'URL', urlInput);
+        });
+        
+        // Check Text button
+        document.getElementById('check-text-btn').addEventListener('click', async function() {
+            const textInput = document.getElementById('text-input').value;
+            const resultDiv = document.getElementById('text-result');
+            
+            if (!textInput) {
+                showError(resultDiv, 'Please enter some text to analyze.');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('text', textInput);
+            
+            sendAnalysis(formData, resultDiv, 'text', textInput);
+        });
+        
+        // Check File button
+        document.getElementById('check-file-btn').addEventListener('click', async function() {
+            const fileInputElem = document.getElementById('file-upload');
+            const resultDiv = document.getElementById('file-result');
+            
+            if (!fileInputElem.files || fileInputElem.files.length === 0) {
+                showError(resultDiv, 'Please select a file to analyze.');
+                return;
+            }
+            
+            const file = fileInputElem.files[0];
+            
+            // Validate file size
+            if (file.size > 5 * 1024 * 1024) {
+                showError(resultDiv, 'File size exceeds the 5MB limit. Please choose a smaller file.');
+                return;
+            }
+            
+            // Validate file type
+            const validExtensions = ['.txt', '.docx', '.pdf'];
+            const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+            if (!validExtensions.includes(fileExtension)) {
+                showError(resultDiv, 'Unsupported file type. Please upload a .txt, .docx, or .pdf file.');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            sendAnalysis(formData, resultDiv, 'file', file.name);
+        });
+        
+        // Check Image button
+        document.getElementById('check-image-btn').addEventListener('click', async function() {
+            const imageInputElem = document.getElementById('image-upload');
+            const resultDiv = document.getElementById('image-result');
+            
+            if (!imageInputElem.files || imageInputElem.files.length === 0) {
+                showError(resultDiv, 'Please select an image to analyze.');
+                return;
+            }
+            
+            const image = imageInputElem.files[0];
+            
+            // Validate file size
+            if (image.size > 5 * 1024 * 1024) {
+                showError(resultDiv, 'Image size exceeds the 5MB limit. Please choose a smaller image.');
+                return;
+            }
+            
+            // Validate file type
+            const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
+            const fileExtension = image.name.substring(image.name.lastIndexOf('.')).toLowerCase();
+            if (!validExtensions.includes(fileExtension)) {
+                showError(resultDiv, 'Unsupported image format. Please upload a .jpg, .jpeg, .png, .gif, or .bmp file.');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('image', image);
+            
+            sendAnalysis(formData, resultDiv, 'image', image.name);
+        });
+    </script>
+</body>
+</html>

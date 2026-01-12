@@ -1,0 +1,18 @@
+# datasets
+data/*.csv
+data/*.txt
+data/*.jsonl
+data/files/
+
+# secrets & credentials
+*.env
+
+# python cache
+__pycache__/
+*.pyc
+
+# models (optional – large files)
+models/*.joblib
+models/*.pth
+
+
